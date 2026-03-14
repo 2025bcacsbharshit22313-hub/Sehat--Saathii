@@ -16,6 +16,7 @@ export default function ContactSection() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    e.currentTarget.reset()
     setSubmitted(true)
     setTimeout(() => setSubmitted(false), 4000)
   }
