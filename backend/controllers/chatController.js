@@ -207,20 +207,25 @@ const patterns = [
  * For production, consider a dedicated library like DOMPurify or validator.js.
  */
 function sanitize(text) {
+  const MAX_ITERATIONS = 10;
   let clean = text;
-  // Repeatedly strip HTML tags to handle nested/recursive patterns like <<script>script>
   let previous;
+  let iterations = 0;
+  // Repeatedly strip HTML tags to handle nested/recursive patterns like <<script>script>
   do {
     previous = clean;
     clean = clean.replace(/<[^>]*>/g, "");
-  } while (clean !== previous);
+    iterations++;
+  } while (clean !== previous && iterations < MAX_ITERATIONS);
   // Strip dangerous URI schemes (javascript:, data:, vbscript:) and event handlers
   clean = clean.replace(/(?:javascript|data|vbscript)\s*:/gi, "");
   // Repeatedly strip event handler attributes to handle obfuscated patterns
+  iterations = 0;
   do {
     previous = clean;
     clean = clean.replace(/\bon\w+\s*=/gi, "");
-  } while (clean !== previous);
+    iterations++;
+  } while (clean !== previous && iterations < MAX_ITERATIONS);
   return clean.trim();
 }
 
