@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3001;
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "*",
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };

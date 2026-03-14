@@ -202,9 +202,16 @@ const patterns = [
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
-/** Strip HTML tags for basic XSS prevention */
+/**
+ * Strip HTML tags for basic XSS prevention.
+ * For production, consider a dedicated library like DOMPurify or validator.js.
+ */
 function sanitize(text) {
-  return text.replace(/<[^>]*>/g, "").trim();
+  return text
+    .replace(/<[^>]*>/g, "")
+    .replace(/javascript:/gi, "")
+    .replace(/on\w+\s*=/gi, "")
+    .trim();
 }
 
 function getLanguageLabel(lang) {
