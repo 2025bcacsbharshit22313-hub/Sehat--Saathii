@@ -203,15 +203,25 @@ const patterns = [
 // ── Helpers ──────────────────────────────────────────────────────────
 
 /**
- * Strip HTML tags for basic XSS prevention.
+ * Strip HTML tags and dangerous patterns for basic XSS prevention.
  * For production, consider a dedicated library like DOMPurify or validator.js.
  */
 function sanitize(text) {
-  return text
-    .replace(/<[^>]*>/g, "")
-    .replace(/javascript:/gi, "")
-    .replace(/on\w+\s*=/gi, "")
-    .trim();
+  let clean = text;
+  // Repeatedly strip HTML tags to handle nested/recursive patterns like <<script>script>
+  let previous;
+  do {
+    previous = clean;
+    clean = clean.replace(/<[^>]*>/g, "");
+  } while (clean !== previous);
+  // Strip dangerous URI schemes (javascript:, data:, vbscript:) and event handlers
+  clean = clean.replace(/(?:javascript|data|vbscript)\s*:/gi, "");
+  // Repeatedly strip event handler attributes to handle obfuscated patterns
+  do {
+    previous = clean;
+    clean = clean.replace(/\bon\w+\s*=/gi, "");
+  } while (clean !== previous);
+  return clean.trim();
 }
 
 function getLanguageLabel(lang) {
