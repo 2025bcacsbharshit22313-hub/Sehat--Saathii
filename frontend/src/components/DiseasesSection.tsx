@@ -16,13 +16,13 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
 }
 
 const expandVariants = {
   hidden: { height: 0, opacity: 0 },
-  visible: { height: 'auto', opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
-  exit: { height: 0, opacity: 0, transition: { duration: 0.2, ease: 'easeIn' } },
+  visible: { height: 'auto', opacity: 1, transition: { duration: 0.3, ease: 'easeOut' as const } },
+  exit: { height: 0, opacity: 0, transition: { duration: 0.2, ease: 'easeIn' as const } },
 }
 
 const sections = [
